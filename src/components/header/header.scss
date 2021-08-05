@@ -1,0 +1,23 @@
+.header {
+    grid-area: header;
+    padding: 15px 10px;
+    background-color: #318CBF;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    // .header__logo
+    &__logo {
+        height: 100%;
+        a {
+            display: block;
+            height: 100%;
+        }
+        
+        img {
+           height: 100%;
+        }
+    }
+    &__descr {
+        height: 70%;
+    }
+}

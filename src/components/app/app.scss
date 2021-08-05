@@ -1,0 +1,12 @@
+.wrapper {
+    max-width: 1400px;
+    margin: 0px auto;
+    display: grid;
+    grid-template-rows: 100px auto;
+    grid-template-columns: 2fr 10fr;
+    grid-template-areas: 
+        "header header"
+        "nav content"
+    ;
+    gap: 20px;
+}
