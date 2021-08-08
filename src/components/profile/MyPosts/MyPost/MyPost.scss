@@ -1,0 +1,23 @@
+.post {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+    &:last-child{
+        margin: 0;
+    }
+    &__icon {
+        border-radius: 50%;
+        overflow: hidden;
+        width: 100px;
+        height: 100px;
+        margin-right: 40px;
+        img {
+            width: 100%;
+        }
+    }
+    // .content__posts-name
+    &__name {
+        font-size: 25px;
+        font-weight: 500;
+    }
+}
