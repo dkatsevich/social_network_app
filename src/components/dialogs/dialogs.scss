@@ -1,0 +1,28 @@
+.dialogs {
+  padding: 45px 10px;
+  color:#000;
+  // .dialogs__title
+  &__title {
+    font-size: 30px;
+    font-weight: 700;
+  }
+  &__wrapper {
+    margin-top: 30px;
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+  }
+  &-items {
+    padding-right: 20px;
+    position: relative;
+    &:after{
+      content:'';
+      width: 1px;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      right: 0;
+      border-radius: 100%;
+      background: rgb(172, 172, 172);
+    }
+  }
+}

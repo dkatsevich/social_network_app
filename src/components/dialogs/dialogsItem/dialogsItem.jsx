@@ -1,11 +1,11 @@
 import React from 'react';
+import './dialogsItem.scss'
 
-
-const DialogsItem = () => {
+const DialogsItem = ({name, status}) => {
     return (
         <a href="#" className="dialog-item">
-            <div className="dialog-item__status online"></div>
-            <div className="dialog-item__name">Andrew</div>
+            <div className={`dialog-item__status ${status}`}></div>
+            <div className="dialog-item__name">{name}</div>
         </a>
     )
 }

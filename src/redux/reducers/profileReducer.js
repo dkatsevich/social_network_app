@@ -1,68 +1,44 @@
 const initialState = {
-    messages: [
-        {
-            id: 1,
-            body: 'Hello',
-            address: 'from',
-            name: 'Andrew',
-            img: './../friend1.png',
-            who: 'me'
-        },
-        {
-            id: 2,
-            body: 'Hi',
-            address: 'to',
-            name: 'Me',
-            img: './../myavatar.png',
-            who: 'me'
-
-        },
-        {
-            id: 3,
-            body: 'New Social Network',
-            address: 'from',
-            name: 'Andrew',
-            img: './../friend1.png',
-            who: 'me'
-
-        },
-        {
-            id: 4,
-            body: 'Yes, course',
-            address: 'to',
-            name: 'Me',
-            img: './../myavatar.png',
-            who: 'me'
-        },
+    posts: [
+        {id: 1, body: 'Hey, why nobody love me 0?'},
+        {id: 2, body: 'Hey, why nobody love me 1?'},
+        {id: 3, body: 'Hey, why nobody love me 2?'},
+        {id: 4, body: 'Hey, why nobody love me 3?'},
+        {id: 5, body: 'Hey, why nobody love me 4?'},
     ],
-    newMessage: ''
+    newPost: '',
+    profile: {}
 };
 
-const messageReducer = (state = initialState, action) => {
+const profileReducer = (state = initialState, action) => {
     switch (action.type) {
-        case 'UPDATE_MESSAGE':
+        case 'ADD_POST':
             return {
                 ...state,
-                newMessage: action.body
-            }
-        case 'POST_MESSAGE':
-            return {
-                messages: [
-                    ...state.messages,
+                posts: [
+                    ...state.posts,
                     {
                         id: 6,
-                        body: state.newMessage,
-                        address: 'to',
-                        name: 'Me',
-                        img: './../myavatar.png'
+                        body: state.newPost
                     }
                 ],
-                newMessage: ''
+                newPost: ''
             }
+        case 'UPDATE_POST':
+            return {
+                ...state,
+                newPost: action.body
+            }
+        case 'LOADED_PROFILE':
+            return {
+                ...state,
+                profile: action.profile
+            }
+
         default:
             return state;
     }
 }
 
 
-export default messageReducer;
+export default profileReducer;

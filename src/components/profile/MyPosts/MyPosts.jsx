@@ -1,25 +1,47 @@
 import React from 'react';
-import './Posts.scss'
+import MyPost from "./MyPost/MyPost";
 
-import Post from "./Post/Post";
+import './MyPosts.scss'
+import {addPost, updatePost} from "../../../redux/actions/profileActions";
+import {connect} from "react-redux";
 
 
-const Posts = () => {
+const MyPosts = ({posts, newPost, addPost, updatePost, photos}) => {
+    const changeInput = (e) => {
+        updatePost(e.target.value);
+
+    }
+
+    const addMessage = (e) => {
+        e.preventDefault();
+        addPost()
+    }
+
+    const postItems = posts.map(post => {
+        return (
+            <MyPost key={post.id} name={post.body} photo={photos.small}/>
+        )
+    })
+
     return (
-		<div className="content__posts">
-			<div className="content__posts-title">My posts</div>
-			<form className="content__posts-form">
-				<input type="text" placeholder="Your news..." className="content__posts-input"></input>
-				<button className="content__posts-btn">Send</button>
-			</form>
-			<div className="content__posts-items">
-				<Post/>
-				<Post/>
-				<Post/>
-				<Post/>
-			</div>
-		</div>
+        <div className="posts">
+            <div className="posts__title">My posts</div>
+            <form onSubmit={addMessage} className="posts__form">
+                <input onChange={changeInput} type="text" placeholder="Your news..." value={newPost}
+                       className="posts__input"></input>
+                <button className="posts__btn">Send</button>
+            </form>
+            <div className="posts__items">
+                {postItems}
+            </div>
+        </div>
     )
 }
 
-export default Posts;
+const mapStateToProps = ({profileReducer: {posts, newPost}}) => ({posts, newPost});
+const action = {
+    addPost,
+    updatePost
+}
+
+export default connect(mapStateToProps, action)(MyPosts);

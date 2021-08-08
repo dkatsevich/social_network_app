@@ -1,93 +1,54 @@
 import React from "react";
+import icon from './icon.jpg'
+import './user.scss'
+import {NavLink} from "react-router-dom";
+import axios from "../../../services/serviceApi";
 
-const Users = () => {
+const User = ({id, toggleFollow, toggleDisabled, disabledUsers, userInfo: {name, status, photos, followed}, me}) => {
+    const imgSmall = photos ? (photos.small ? photos.small : icon) : icon;
+
     return (
-        <div className="users">
-            <div className="users__title">Users</div>
-            <div className="users__items">
-                <div className="user">
-                    <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="" className="user__avatar"/>
-                    <div className="user__wrapper">
-                        <div className="user__row">
-                            <div className="user__info">
-                                <div className="user__name">ffffffffff</div>
-                                <div className="user__status">ffffffffffffffff</div>
-                            </div>
-                            <div className="user__location">
-                                <span>eeeeeeeeee</span>
-                                <span>eeeeeeeeeee</span>
-                            </div>
-                        </div>
-                    </div>
-                    <button className="user__follow-btn">Follow</button>
+        <div className="user">
+            <NavLink to={`/profile/${id}`}>
+                <img src={imgSmall} alt={name} className="user__avatar"/>
+            </NavLink>
+            <div className="user__wrapper">
+                <div className="user__info">
+                    <div className="user__name">{name}</div>
+                    <div className="user__status">{status ? status : 'It\'s some default status...'}</div>
                 </div>
-                <div className="user">
-                    <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="" className="user__avatar"/>
-                    <div className="user__wrapper">
-                        <div className="user__row">
-                            <div className="user__info">
-                                <div className="user__name">ffffffffff</div>
-                                <div className="user__status">ffffffffffffffff</div>
-                            </div>
-                            <div className="user__location">
-                                <span>eeeeeeeeee</span>
-                                <span>eeeeeeeeeee</span>
-                            </div>
-                        </div>
-                    </div>
-                    <button className="user__follow-btn">Follow</button>
-                </div>
-                <div className="user">
-                    <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="" className="user__avatar"/>
-                    <div className="user__wrapper">
-                        <div className="user__row">
-                            <div className="user__info">
-                                <div className="user__name">ffffffffff</div>
-                                <div className="user__status">ffffffffffffffff</div>
-                            </div>
-                            <div className="user__location">
-                                <span>eeeeeeeeee</span>
-                                <span>eeeeeeeeeee</span>
-                            </div>
-                        </div>
-                    </div>
-                    <button className="user__follow-btn">Follow</button>
-                </div>
-                <div className="user">
-                    <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="" className="user__avatar"/>
-                    <div className="user__wrapper">
-                        <div className="user__row">
-                            <div className="user__info">
-                                <div className="user__name">ffffffffff</div>
-                                <div className="user__status">ffffffffffffffff</div>
-                            </div>
-                            <div className="user__location">
-                                <span>eeeeeeeeee</span>
-                                <span>eeeeeeeeeee</span>
-                            </div>
-                        </div>
-                    </div>
-                    <button className="user__follow-btn">Follow</button>
-                </div>
-                <div className="user">
-                    <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="" className="user__avatar"/>
-                    <div className="user__wrapper">
-                        <div className="user__row">
-                            <div className="user__info">
-                                <div className="user__name">ffffffffff</div>
-                                <div className="user__status">ffffffffffffffff</div>
-                            </div>
-                            <div className="user__location">
-                                <span>eeeeeeeeee</span>
-                                <span>eeeeeeeeeee</span>
-                            </div>
-                        </div>
-                    </div>
-                    <button className="user__follow-btn">Follow</button>
+                <div className="user__location">
+                    <span>Good country</span>
+                    <span>Cool city</span>
                 </div>
             </div>
+            {me ? '<= It\'s your profile)' :
+                <button disabled={disabledUsers.some(user => user === id)}
+                        onClick={() => {
+                            toggleDisabled(true, id)
+                            if (followed) {
+                                axios.delete(`/follow/${id}`, {})
+                                    .then(res => {
+                                        if (res.data.resultCode === 0) {
+                                            toggleFollow(id)
+                                        }
+                                        toggleDisabled(false, id)
+                                    })
+                            } else {
+                                axios.post(`/follow/${id}`, {})
+                                    .then(res => {
+                                        if (res.data.resultCode === 0) {
+                                            toggleFollow(id)
+                                        }
+                                        toggleDisabled(false, id)
+                                    })
+                            }
+                        }}
+                        className="user__follow-btn">
+                    {disabledUsers.some(user => user === id) ? 'Wait a second' : (followed ? "UnFollow" : "Follow")}
+                </button>}
         </div>
     )
 }
 
-export default Users;
+export default User;

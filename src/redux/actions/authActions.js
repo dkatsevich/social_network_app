@@ -1,10 +1,7 @@
 
-const updatePost = (body) => ({type: "UPDATE_POST", body});
-const addPost = () => ({type: "ADD_POST"});
-const loadedProfile = (profile) => ({type: "LOADED_PROFILE", profile});
+const putUserData = (data) => ({type: "PUT_USER_DATA", data});
+
 
 export {
-    updatePost,
-    addPost,
-    loadedProfile,
+    putUserData,
 }

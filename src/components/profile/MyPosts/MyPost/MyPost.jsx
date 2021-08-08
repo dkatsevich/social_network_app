@@ -1,18 +1,18 @@
 import React from 'react';
-import './Post.scss'
+import './MyPost.scss'
 
 import Avatar from './../../myavatar.png'
 
-const Post = (props) => {
+const MyPost = (props) => {
 
-	const {name} = props;
+    const {name, photo} = props;
 
     return (
-		<div className="post">
-			<div className="post__icon"><img src={Avatar} alt="" /></div>
-			<div className="post__name">{name}</div>
-		</div>
+        <div className="post">
+            <div className="post__icon"><img src={photo} alt=""/></div>
+            <div className="post__name">{name}</div>
+        </div>
     )
 }
 
-export default Post;
+export default MyPost;

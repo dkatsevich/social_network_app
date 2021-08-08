@@ -1,45 +1,78 @@
-import React from 'react';
+import React, {Component} from 'react';
 import './profile.scss'
-
-import Avatar from './myavatar.png'
 import Bg from './content.jpg'
+import icon from './../users/user/icon.jpg'
+import MyPosts from "./MyPosts/MyPosts";
+import {connect} from "react-redux";
+import {loadedProfile} from "../../redux/actions/profileActions";
+import {changeLoadingStatus} from "../../redux/actions/loadingActions";
+import Spinner from "../spinner/spinner";
+import * as axios from "axios";
 
 
-const Profile = () => {
+class ProfileContainer extends Component {
+    componentDidMount() {
+        const {loadedProfile, changeLoadingStatus, id} = this.props;
+
+        changeLoadingStatus(true)
+
+        axios.get(`https://social-network.samuraijs.com/api/1.0/profile/${id}`)
+            .then(res => {
+                loadedProfile(res.data)
+                changeLoadingStatus(false)
+            })
+    }
+
+    render() {
+        const {loading, profile} = this.props;
+        if (loading) {
+            return <Spinner/>
+        }
+
+        return (
+            <Profile profile={profile}/>
+        )
+    }
+}
+
+const Profile = ({profile: {fullName, photos, contacts}}) => {
+    const imgSmall = photos ? (photos.small ? photos.small : icon) : icon;
+
     return (
-        <div className="content">
-				<img className="content__img" src={Bg} alt="" />
-				<div className="content__user">
-					<div className="content__user-img"><img src={Avatar} alt="" /></div>
-					<div className="content__user-info">
-						<div className="content__user-name">Dmitry K.</div>
-						<ul className="content__user-list">
-							<li className="content__user-list-item">Data of Birth: 2 November</li>
-							<li className="content__user-list-item">City: Kiev</li>
-							<li className="content__user-list-item">Education: BSU'11</li>
-							<li className="content__user-list-item">Web Site: https://github.com/dkatsevich</li>
-						</ul>
-					</div>
-				</div>
-				<div className="content__posts">
-					<div className="content__posts-title">My posts</div>
-					<form className="content__posts-form">
-						<input type="text" placeholder="Your news..." className="content__posts-input"></input>
-						<button className="content__posts-btn">Send</button>
-					</form>
-					<div className="content__posts-items">
-						<div className="content__posts-item">
-							<div className="content__posts-icon"><img src={Avatar} alt="" /></div>
-							<div className="content__posts-name">Hey, why nobody love me?</div>
-						</div>
-						<div className="content__posts-item">
-							<div className="content__posts-icon"><img src={Avatar} alt="" /></div>
-							<div className="content__posts-name">Hey, why nobody love me?</div>
-						</div>
-					</div>
-				</div>
-			</div>
+        <div className="profile">
+            <div className="profile__img-wrapper"><img className="profile__img" src={Bg} alt=""/></div>
+            <div className="profile__user">
+                <div className="profile__user-img"><img src={imgSmall} alt=""/></div>
+                <div className="profile__user-info">
+                    <div className="profile__user-name">{fullName}</div>
+                    <ul className="profile__user-list">
+                        {contacts.facebook ? <li className="profile__user-list-item">facebook: {contacts.facebook}</li> : null}
+                        {contacts.website ? <li className="profile__user-list-item">website: {contacts.website}</li> : null}
+                        {contacts.vk ? <li className="profile__user-list-item">vk: {contacts.vk}</li> : null}
+                        {contacts.twitter ? <li className="profile__user-list-item">twitter: {contacts.twitter}</li> : null}
+                        {contacts.instagram ? <li className="profile__user-list-item">instagram: {contacts.instagram}</li> : null}
+                        {contacts.youtube ? <li className="profile__user-list-item">youtube: {contacts.youtube}</li> : null}
+                        {contacts.github ? <li className="profile__user-list-item">github: {contacts.github}</li> : null}
+                        {contacts.mainLink ? <li className="profile__user-list-item">mainLink: {contacts.mainLink}</li> : null}
+                    </ul>
+                </div>
+            </div>
+            <MyPosts photos={photos.small ? photos : {small: icon}}/>
+        </div>
     )
 }
 
-export default Profile;
+
+const mapStateToProps = ({profileReducer: {profile, posts, newPost}, loadingReducer: {loading}}) => ({
+    profile,
+    posts,
+    newPost,
+    loading,
+})
+
+const actions = {
+    loadedProfile,
+    changeLoadingStatus
+}
+
+export default connect(mapStateToProps, actions)(ProfileContainer);

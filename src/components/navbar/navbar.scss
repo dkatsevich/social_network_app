@@ -9,6 +9,12 @@
     // .nav__list-item
     &__list-item {
         margin: 15px 0;
+        &:hover {
+            text-decoration: underline;
+        }
+        &_active {
+            text-decoration: underline;
+        }
         &.last {
             margin-top: 40px;
         }

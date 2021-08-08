@@ -1,8 +1,10 @@
 
-const updateMessage = (body) => ({type: "UPDATE_MESSAGE", body});
-const postMessage = () => ({type: "POST_MESSAGE"});
+const updatePost = (body) => ({type: "UPDATE_POST", body});
+const addPost = () => ({type: "ADD_POST"});
+const loadedProfile = (profile) => ({type: "LOADED_PROFILE", profile});
 
 export {
-    updateMessage,
-    postMessage,
+    updatePost,
+    addPost,
+    loadedProfile,
 }

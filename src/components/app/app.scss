@@ -10,3 +10,9 @@
     ;
     gap: 20px;
 }
+
+.content {
+    grid-area: content;
+    border: 1px solid rgba(0, 0, 0, 0.157);
+    background: rgb(221, 221, 221);
+}

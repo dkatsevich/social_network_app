@@ -1,101 +1,55 @@
-.content {
-    grid-area: content;
-    // .content__img
-    &__img {
-        display: block;
-        width: 100%;
-        height: 250px;
-        object-fit: cover;
+.profile {
+  padding: 0 10px 10px;
+  color:#000;
+  // .profile__img
+  &__img-wrapper {
+    margin: 0 -10px;
+  }
+  &__img {
+    display: block;
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+  }
+
+  // .profile__user
+  &__user {
+    margin-top: 15px;
+    display: flex;
+    width: 100%;
+    background: #fff;
+    padding: 15px;
+  }
+
+  // .profile__user-img
+  &__user-img {
+    height: 150px;
+
+    img {
+      height: 100%;
     }
-    // .content__user
-    &__user {
-        margin-top: 30px;
-        display: flex;
-    }
-    // .content__user-img
-    &__user-img {
-        height: 150px;
-        img {
-            height: 100%;
-        }
-    }
-    // .content__user-info
-    &__user-info {
-        margin-left: 30px;
-        color:#000;
-    }
-    // .content__user-name
-    &__user-name {
-        font-size: 30px;
-        font-weight: 500;
-        margin-bottom: 30px;
-    }
-    // .content__user-list
-    &__user-list {
-        font-size: 17px;
-    }
-    // .content__user-list-item
-    &__user-list-item {
-        margin-bottom: 7px;
-    }
-    // .content__posts
-    &__posts {
-        margin-top: 70px;
-    }
-    // .content__posts-title
-    &__posts-title {
-        font-size: 30px;
-    }
-    // .content__posts-form
-    &__posts-form {
-        margin-top: 20px;
-        display: flex;
-        flex-direction: column;
-    }
-    // .content__posts-input
-    &__posts-input {
-        width: 100%;
-        background-color: rgb(228, 228, 228);
-        padding: 20px 20px 30px 20px;
-        
-    }
-    // .content__posts-btn
-    &__posts-btn {
-        font-size: 20px;
-        font-weight: 700;
-        color:#fff;
-        background: #318CBF;
-        padding: 10px 20px;
-        margin-top: 10px;
-        align-self: flex-end;
-    }
-    // .content__posts-items
-    &__posts-items {
-        margin-top: 40px;
-    }
-    // .content__posts-item
-    &__posts-item {
-        display: flex;
-        align-items: center;
-        margin-bottom: 15px;
-        &:last-child{
-            margin: 0;
-        }
-    }
-    // .content__posts-icon
-    &__posts-icon {
-        border-radius: 50%;
-        overflow: hidden;
-        width: 100px;
-        height: 100px;
-        margin-right: 40px;
-        img {
-            width: 100%;
-        }
-    }
-    // .content__posts-name
-    &__posts-name {
-        font-size: 25px;
-        font-weight: 500;
-    }
+  }
+
+  // .profile__user-info
+  &__user-info {
+    margin-left: 30px;
+    color: #000;
+  }
+
+  // .profile__user-name
+  &__user-name {
+    font-size: 30px;
+    font-weight: 500;
+    margin-bottom: 30px;
+  }
+
+  // .profile__user-list
+  &__user-list {
+    font-size: 17px;
+  }
+
+  // .profile__user-list-item
+  &__user-list-item {
+    margin-bottom: 7px;
+  }
 }
