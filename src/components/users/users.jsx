@@ -1,29 +1,29 @@
 import React, {Component} from "react";
-import UserAPI from "../../services/serviceApi";
 import {connect} from "react-redux";
 
 import './users.scss'
 import User from "./user/user";
-import {setCurrentPage, setTotalCount, setUsers, toggleDisable, toggleFollow} from "../../redux/actions/usersActions";
+import {
+    getUsersThunk,
+    setCurrentPage,
+    setTotalCount,
+    setUsers,
+    toggleDisable,
+    toggleFollowConfirm,
+    toggleFollowThunk
+} from "../../redux/actions/usersActions";
 import {changeLoadingStatus} from '../../redux/actions/loadingActions'
 import Spinner from "../spinner/spinner";
 
 class UsersContainer extends Component {
 
     componentDidMount() {
-        const {currentPage, pageSize, setUsers, setTotalCount, changeLoadingStatus} = this.props;
-        changeLoadingStatus(true)
-
-        UserAPI.getUsers(currentPage, pageSize)
-            .then(res => {
-                setUsers(res.data.items)
-                setTotalCount(res.data.totalCount)
-                changeLoadingStatus(false)
-            })
+        const {getUsersThunk, pageSize, currentPage} = this.props;
+        getUsersThunk(currentPage, pageSize);
     }
 
     renderUsers = (arr) => {
-        const {toggleFollow, myId, toggleDisable, isFetching, disabledUsers} = this.props;
+        const {toggleFollowConfirm, myId, toggleDisable, isFetching, disabledUsers, toggleFollowThunk} = this.props;
         return arr.map(user => {
             const {id, ...userInfo} = user;
             const me = id === myId ? true : false;
@@ -31,10 +31,11 @@ class UsersContainer extends Component {
                 <User key={id}
                       id={id}
                       userInfo={userInfo}
-                      toggleFollow={() => toggleFollow(id)}
+                      toggleFollowConfirm={() => toggleFollowConfirm(id)}
                       toggleDisabled={toggleDisable}
                       disable={isFetching}
                       disabledUsers={disabledUsers}
+                      toggleFollowThunk={toggleFollowThunk}
                       me={me}
                 />
             )
@@ -64,16 +65,11 @@ class UsersContainer extends Component {
     }
 
     paginationRequest = (pageNumber) => {
-        const {setCurrentPage, setUsers, currentPage, pageSize, changeLoadingStatus} = this.props;
+        const {setCurrentPage, currentPage, pageSize, getUsersThunk} = this.props;
 
         if (pageNumber !== currentPage) {
-            changeLoadingStatus(true)
             setCurrentPage(pageNumber);
-            UserAPI.getUsers(currentPage, pageSize)
-                .then(res => {
-                    setUsers(res.data.items)
-                    changeLoadingStatus(false)
-                })
+            getUsersThunk(pageNumber, pageSize)
         }
     }
 
@@ -125,11 +121,13 @@ const mapStateToProps = ({
 
 const actions = {
     setUsers,
-    toggleFollow,
+    toggleFollowConfirm,
     setTotalCount,
     setCurrentPage,
     changeLoadingStatus,
     toggleDisable,
+    getUsersThunk,
+    toggleFollowThunk,
 }
 
 

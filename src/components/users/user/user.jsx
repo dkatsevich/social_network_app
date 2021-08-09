@@ -4,7 +4,7 @@ import './user.scss'
 import {NavLink} from "react-router-dom";
 import UserAPI from "../../../services/serviceApi";
 
-const User = ({id, toggleFollow, toggleDisabled, disabledUsers, userInfo: {name, status, photos, followed}, me}) => {
+const User = ({id, toggleFollowThunk, disabledUsers, userInfo: {name, status, photos, followed}, me}) => {
     const imgSmall = photos ? (photos.small ? photos.small : icon) : icon;
 
     return (
@@ -24,26 +24,7 @@ const User = ({id, toggleFollow, toggleDisabled, disabledUsers, userInfo: {name,
             </div>
             {me ? '<= It\'s your profile)' :
                 <button disabled={disabledUsers.some(user => user === id)}
-                        onClick={() => {
-                            toggleDisabled(true, id)
-                            if (followed) {
-                                UserAPI.toggleFollow(id, false)
-                                    .then(res => {
-                                        if (res.data.resultCode === 0) {
-                                            toggleFollow(id)
-                                        }
-                                        toggleDisabled(false, id)
-                                    })
-                            } else {
-                                UserAPI.toggleFollow(id, true)
-                                    .then(res => {
-                                        if (res.data.resultCode === 0) {
-                                            toggleFollow(id)
-                                        }
-                                        toggleDisabled(false, id)
-                                    })
-                            }
-                        }}
+                        onClick={() => toggleFollowThunk(followed, id)}
                         className="user__follow-btn">
                     {disabledUsers.some(user => user === id) ? 'Wait a second' : (followed ? "UnFollow" : "Follow")}
                 </button>}

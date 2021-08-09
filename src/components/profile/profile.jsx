@@ -4,23 +4,15 @@ import Bg from './content.jpg'
 import icon from './../users/user/icon.jpg'
 import MyPosts from "./MyPosts/MyPosts";
 import {connect} from "react-redux";
-import {loadedProfile} from "../../redux/actions/profileActions";
+import {loadedProfile, loadedProfileThunk} from "../../redux/actions/profileActions";
 import {changeLoadingStatus} from "../../redux/actions/loadingActions";
 import Spinner from "../spinner/spinner";
-import UserAPI from "../../services/serviceApi";
 
 
 class ProfileContainer extends Component {
     componentDidMount() {
-        const {loadedProfile, changeLoadingStatus, id} = this.props;
-
-        changeLoadingStatus(true)
-
-        UserAPI.getProfile(id)
-            .then(res => {
-                loadedProfile(res.data)
-                changeLoadingStatus(false)
-            })
+        const {id, loadedProfileThunk} = this.props;
+        loadedProfileThunk(id)
     }
 
     render() {
@@ -46,14 +38,21 @@ const Profile = ({profile: {fullName, photos, contacts}}) => {
                 <div className="profile__user-info">
                     <div className="profile__user-name">{fullName}</div>
                     <ul className="profile__user-list">
-                        {contacts.facebook ? <li className="profile__user-list-item">facebook: {contacts.facebook}</li> : null}
-                        {contacts.website ? <li className="profile__user-list-item">website: {contacts.website}</li> : null}
+                        {contacts.facebook ?
+                            <li className="profile__user-list-item">facebook: {contacts.facebook}</li> : null}
+                        {contacts.website ?
+                            <li className="profile__user-list-item">website: {contacts.website}</li> : null}
                         {contacts.vk ? <li className="profile__user-list-item">vk: {contacts.vk}</li> : null}
-                        {contacts.twitter ? <li className="profile__user-list-item">twitter: {contacts.twitter}</li> : null}
-                        {contacts.instagram ? <li className="profile__user-list-item">instagram: {contacts.instagram}</li> : null}
-                        {contacts.youtube ? <li className="profile__user-list-item">youtube: {contacts.youtube}</li> : null}
-                        {contacts.github ? <li className="profile__user-list-item">github: {contacts.github}</li> : null}
-                        {contacts.mainLink ? <li className="profile__user-list-item">mainLink: {contacts.mainLink}</li> : null}
+                        {contacts.twitter ?
+                            <li className="profile__user-list-item">twitter: {contacts.twitter}</li> : null}
+                        {contacts.instagram ?
+                            <li className="profile__user-list-item">instagram: {contacts.instagram}</li> : null}
+                        {contacts.youtube ?
+                            <li className="profile__user-list-item">youtube: {contacts.youtube}</li> : null}
+                        {contacts.github ?
+                            <li className="profile__user-list-item">github: {contacts.github}</li> : null}
+                        {contacts.mainLink ?
+                            <li className="profile__user-list-item">mainLink: {contacts.mainLink}</li> : null}
                     </ul>
                 </div>
             </div>
@@ -72,7 +71,8 @@ const mapStateToProps = ({profileReducer: {profile, posts, newPost}, loadingRedu
 
 const actions = {
     loadedProfile,
-    changeLoadingStatus
+    changeLoadingStatus,
+    loadedProfileThunk,
 }
 
 export default connect(mapStateToProps, actions)(ProfileContainer);

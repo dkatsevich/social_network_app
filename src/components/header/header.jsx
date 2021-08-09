@@ -4,20 +4,12 @@ import './header.scss'
 import Logo from './logo.png'
 import LogoDescr from './logo-descr.svg'
 import {connect} from "react-redux";
-import {putUserData} from "../../redux/actions/authActions";
-import UserAPI from "../../services/serviceApi";
+import {authThunk, putUserData} from "../../redux/actions/authActions";
 
 
 class Header extends Component {
     componentDidMount() {
-        UserAPI.authMe()
-            .then(res => {
-                const {putUserData} = this.props;
-                const {id, email, login} = res.data.data;
-                if (res.data.resultCode === 0) {
-                    putUserData({id, email, login})
-                }
-            })
+        this.props.authThunk()
     }
 
     render() {
@@ -46,6 +38,7 @@ const mapDispatchToProps = ({authReducer: {isAuth, login}}) => ({
 
 const actions = {
     putUserData,
+    authThunk,
 }
 
 export default connect(mapDispatchToProps, actions)(Header);
