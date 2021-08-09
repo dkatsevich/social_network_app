@@ -5,12 +5,12 @@ import Logo from './logo.png'
 import LogoDescr from './logo-descr.svg'
 import {connect} from "react-redux";
 import {putUserData} from "../../redux/actions/authActions";
-import axios from "../../services/serviceApi";
+import UserAPI from "../../services/serviceApi";
 
 
 class Header extends Component {
     componentDidMount() {
-        axios.get(`/auth/me`)
+        UserAPI.authMe()
             .then(res => {
                 const {putUserData} = this.props;
                 const {id, email, login} = res.data.data;

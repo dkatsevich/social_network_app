@@ -2,7 +2,7 @@ import React from "react";
 import icon from './icon.jpg'
 import './user.scss'
 import {NavLink} from "react-router-dom";
-import axios from "../../../services/serviceApi";
+import UserAPI from "../../../services/serviceApi";
 
 const User = ({id, toggleFollow, toggleDisabled, disabledUsers, userInfo: {name, status, photos, followed}, me}) => {
     const imgSmall = photos ? (photos.small ? photos.small : icon) : icon;
@@ -27,7 +27,7 @@ const User = ({id, toggleFollow, toggleDisabled, disabledUsers, userInfo: {name,
                         onClick={() => {
                             toggleDisabled(true, id)
                             if (followed) {
-                                axios.delete(`/follow/${id}`, {})
+                                UserAPI.toggleFollow(id, false)
                                     .then(res => {
                                         if (res.data.resultCode === 0) {
                                             toggleFollow(id)
@@ -35,7 +35,7 @@ const User = ({id, toggleFollow, toggleDisabled, disabledUsers, userInfo: {name,
                                         toggleDisabled(false, id)
                                     })
                             } else {
-                                axios.post(`/follow/${id}`, {})
+                                UserAPI.toggleFollow(id, true)
                                     .then(res => {
                                         if (res.data.resultCode === 0) {
                                             toggleFollow(id)

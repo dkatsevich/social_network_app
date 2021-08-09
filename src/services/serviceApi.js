@@ -8,4 +8,25 @@ const instance = axios.create({
     }
 });
 
-export default instance;
+const UserAPI = {
+    getUsers(pageNumber = 1, pageSize = 4) {
+        return instance.get(`/users?page=${pageNumber}&count=${pageSize}`)
+    },
+    authMe() {
+        return instance.get(`/auth/me`)
+    },
+    toggleFollow(id, follow) {
+      if (follow) {
+          return instance.post(`/follow/${id}`, {})
+      }  else {
+          return instance.delete(`/follow/${id}`, {})
+      }
+    },
+    getProfile(id) {
+        return instance.get(`https://social-network.samuraijs.com/api/1.0/profile/${id}`)
+    }
+
+
+}
+
+export default UserAPI;

@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import axios from "../../services/serviceApi";
+import UserAPI from "../../services/serviceApi";
 import {connect} from "react-redux";
 
 import './users.scss'
@@ -14,8 +14,7 @@ class UsersContainer extends Component {
         const {currentPage, pageSize, setUsers, setTotalCount, changeLoadingStatus} = this.props;
         changeLoadingStatus(true)
 
-
-        axios.get(`/users?page=${currentPage}&count=${pageSize}`)
+        UserAPI.getUsers(currentPage, pageSize)
             .then(res => {
                 setUsers(res.data.items)
                 setTotalCount(res.data.totalCount)
@@ -70,7 +69,7 @@ class UsersContainer extends Component {
         if (pageNumber !== currentPage) {
             changeLoadingStatus(true)
             setCurrentPage(pageNumber);
-            axios.get(`/users?page=${pageNumber}&count=${pageSize}`)
+            UserAPI.getUsers(currentPage, pageSize)
                 .then(res => {
                     setUsers(res.data.items)
                     changeLoadingStatus(false)

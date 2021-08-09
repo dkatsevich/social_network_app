@@ -7,7 +7,7 @@ import {connect} from "react-redux";
 import {loadedProfile} from "../../redux/actions/profileActions";
 import {changeLoadingStatus} from "../../redux/actions/loadingActions";
 import Spinner from "../spinner/spinner";
-import * as axios from "axios";
+import UserAPI from "../../services/serviceApi";
 
 
 class ProfileContainer extends Component {
@@ -16,7 +16,7 @@ class ProfileContainer extends Component {
 
         changeLoadingStatus(true)
 
-        axios.get(`https://social-network.samuraijs.com/api/1.0/profile/${id}`)
+        UserAPI.getProfile(id)
             .then(res => {
                 loadedProfile(res.data)
                 changeLoadingStatus(false)
