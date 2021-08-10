@@ -35,29 +35,22 @@ const initialState = {
             who: 'me'
         },
     ],
-    newMessage: ''
 };
 
 const messageReducer = (state = initialState, action) => {
     switch (action.type) {
-        case 'UPDATE_MESSAGE':
-            return {
-                ...state,
-                newMessage: action.body
-            }
         case 'POST_MESSAGE':
             return {
                 messages: [
                     ...state.messages,
                     {
                         id: 6,
-                        body: state.newMessage,
+                        body: action.data,
                         address: 'to',
                         name: 'Me',
                         img: './../myavatar.png'
                     }
                 ],
-                newMessage: ''
             }
         default:
             return state;

@@ -2,6 +2,8 @@ import React from 'react';
 import DialogsItem from "./dialogsItem/dialogsItem";
 import './dialogs.scss'
 import Messages from "./messages/messages";
+import withAuthRedirect from "../hoc/withAuthRedirect";
+import {compose} from "redux";
 
 const Dialogs = () => {
     return (
@@ -22,4 +24,6 @@ const Dialogs = () => {
     )
 }
 
-export default Dialogs;
+export default compose(
+    // withAuthRedirect
+)(Dialogs);

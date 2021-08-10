@@ -1,37 +1,17 @@
 import React from 'react';
 import './messagesForm.scss';
-import {connect} from "react-redux";
-import {updateMessage, postMessage} from "../../../../redux/actions/messageActions";
+import {Field, reduxForm} from "redux-form";
 
 
-const AddMessageForm = ({updateMessage, postMessage, newMessage}) => {
-
-    const changeInput = (e) => {
-        console.log(e.target.value);
-        updateMessage(e.target.value)
-    }
-
-    const addMessage = (e) => {
-        e.preventDefault();
-        if (newMessage) {
-            postMessage();
-        }
-    }
-
+const AddMessageForm = (props) => {
     return (
-        <form onSubmit={addMessage} className="message-form">
-            <input onChange={changeInput} type="text" className="message-form__input" value={newMessage}
+        <form onSubmit={props.handleSubmit} className="message-form">
+            <Field type="text" component={'input'} name={'message'} className="message-form__input"
                    placeholder='Type here...'/>
             <button className="message-form__button">Send Message</button>
         </form>
     )
 }
 
-const mapStateToProps = ({messageReducer: {newMessage}}) => ({newMessage});
 
-const actions = {
-    updateMessage,
-    postMessage
-}
-
-export default connect(mapStateToProps, actions)(AddMessageForm);
+export default reduxForm({form: 'messageForm'})(AddMessageForm);

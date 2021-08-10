@@ -6,8 +6,8 @@ const initialState = {
         {id: 4, body: 'Hey, why nobody love me 3?'},
         {id: 5, body: 'Hey, why nobody love me 4?'},
     ],
-    newPost: '',
-    profile: {}
+    profile: {},
+    status: ''
 };
 
 const profileReducer = (state = initialState, action) => {
@@ -19,21 +19,26 @@ const profileReducer = (state = initialState, action) => {
                     ...state.posts,
                     {
                         id: 6,
-                        body: state.newPost
+                        body: action.data
                     }
                 ],
-                newPost: ''
-            }
-        case 'UPDATE_POST':
-            return {
-                ...state,
-                newPost: action.body
             }
         case 'LOADED_PROFILE':
             return {
                 ...state,
                 profile: action.profile
             }
+        case 'GET_STATUS':
+            return {
+                ...state,
+                status: action.status
+            }
+        case 'SET_STATUS':
+            return {
+                ...state,
+                status: action.status
+            }
+
 
         default:
             return state;

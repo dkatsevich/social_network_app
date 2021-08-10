@@ -16,6 +16,7 @@
   &__user {
     margin-top: 15px;
     display: flex;
+    align-items: center;
     width: 100%;
     background: #fff;
     padding: 15px;
@@ -24,9 +25,11 @@
   // .profile__user-img
   &__user-img {
     height: 150px;
+    width: 150px;
 
     img {
-      height: 100%;
+      width: 100%;
+      object-fit: cover;
     }
   }
 
@@ -40,7 +43,7 @@
   &__user-name {
     font-size: 30px;
     font-weight: 500;
-    margin-bottom: 30px;
+    margin-bottom: 10px;
   }
 
   // .profile__user-list
@@ -52,4 +55,15 @@
   &__user-list-item {
     margin-bottom: 7px;
   }
+}
+
+
+.user-status {
+  margin-bottom: 25px;
+  display: flex;
+  align-items: center;
+  &__span {
+    font-size: 20px;
+  }
+  &__input {}
 }

@@ -1,8 +1,9 @@
-import UserAPI from "../../services/serviceApi";
+import {AuthAPI} from "../../services/serviceApi";
+import {bindActionCreators} from "react-redux";
 
 const putUserData = (data) => ({type: "PUT_USER_DATA", data});
-const authThunk = () => (dispatch) => {
-    UserAPI.authMe()
+const authMeThunk = () => (dispatch) => {
+    AuthAPI.authMe()
         .then(res => {
             const {id, email, login} = res.data.data;
             if (res.data.resultCode === 0) {
@@ -11,7 +12,17 @@ const authThunk = () => (dispatch) => {
         })
 }
 
+const loginMeThunk = (data) => (dispatch) => {
+    AuthAPI.login(data)
+        .then(res => {
+            if (res.resultCode === 0) {
+                authMeThunk()(dispatch);
+            }
+        })
+}
+
 export {
     putUserData,
-    authThunk,
+    loginMeThunk,
+    authMeThunk,
 }

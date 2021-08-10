@@ -4,9 +4,10 @@ import me from './../myavatar.png';
 import './messages.scss';
 import {connect} from "react-redux";
 import AddMessageForm from "./messagesForm/messagesForm";
+import {postMessage} from "../../../redux/actions/messageActions";
 
 
-const Messages = ({messages, newMessage, updateMessage, postMessage}) => {
+const Messages = ({messages, postMessage}) => {
 
     const items = messages.map(message => {
         const {id, body, address, img, name, who} = message;
@@ -23,16 +24,22 @@ const Messages = ({messages, newMessage, updateMessage, postMessage}) => {
         )
     })
 
+    const addMessage = (data) => {
+        postMessage(data.message);
+    }
+
     return (
         <div className="messages">
             {items}
-            <AddMessageForm/>
+            <AddMessageForm onSubmit={addMessage}/>
         </div>
     )
 }
 
-
 const mapStateToProps = ({messageReducer: {messages}}) => ({messages});
+const actions = {
+    postMessage
+}
 
 
-export default connect(mapStateToProps)(Messages);
+export default connect(mapStateToProps, actions)(Messages);

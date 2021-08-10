@@ -2,19 +2,36 @@ import React from 'react';
 import MyPost from "./MyPost/MyPost";
 
 import './MyPosts.scss'
-import {addPost, updatePost} from "../../../redux/actions/profileActions";
+import {addPost} from "../../../redux/actions/profileActions";
 import {connect} from "react-redux";
+import {Field, reduxForm} from "redux-form";
+import {maxLengthCreator, mustRequire} from "../../utils/validation";
+import {Input, Textarea} from "../../formControls/formControls";
 
+const maxLength10 = maxLengthCreator(10);
 
-const MyPosts = ({posts, newPost, addPost, updatePost, photos}) => {
-    const changeInput = (e) => {
-        updatePost(e.target.value);
+let AddPostForm = (props) => {
+    return (
+        <form onSubmit={props.handleSubmit} className="posts__form">
+            <Field name={'newPost'}
+                   type="text"
+                   placeholder="Your news..."
+                   className="posts__input"
+                   component={Input}
+                   validate={[mustRequire, maxLength10]}
+            />
+            <button className="posts__btn">Send</button>
+        </form>
+    )
+}
 
-    }
+AddPostForm = reduxForm({form: 'postForm'})(AddPostForm);
 
-    const addMessage = (e) => {
-        e.preventDefault();
-        addPost()
+const MyPosts = ({posts, addPost, photos}) => {
+
+    const addMessage = (formData) => {
+        console.log(formData.newPost);
+        addPost(formData.newPost)
     }
 
     const postItems = posts.map(post => {
@@ -26,11 +43,7 @@ const MyPosts = ({posts, newPost, addPost, updatePost, photos}) => {
     return (
         <div className="posts">
             <div className="posts__title">My posts</div>
-            <form onSubmit={addMessage} className="posts__form">
-                <input onChange={changeInput} type="text" placeholder="Your news..." value={newPost}
-                       className="posts__input"></input>
-                <button className="posts__btn">Send</button>
-            </form>
+            <AddPostForm onSubmit={addMessage}/>
             <div className="posts__items">
                 {postItems}
             </div>
@@ -38,10 +51,9 @@ const MyPosts = ({posts, newPost, addPost, updatePost, photos}) => {
     )
 }
 
-const mapStateToProps = ({profileReducer: {posts, newPost}}) => ({posts, newPost});
+const mapStateToProps = ({profileReducer: {posts}}) => ({posts});
 const action = {
     addPost,
-    updatePost
 }
 
 export default connect(mapStateToProps, action)(MyPosts);

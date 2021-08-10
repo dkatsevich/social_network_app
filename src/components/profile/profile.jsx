@@ -4,75 +4,55 @@ import Bg from './content.jpg'
 import icon from './../users/user/icon.jpg'
 import MyPosts from "./MyPosts/MyPosts";
 import {connect} from "react-redux";
-import {loadedProfile, loadedProfileThunk} from "../../redux/actions/profileActions";
+import {getUserStatus, loadedProfile, loadedProfileThunk, updateStatus} from "../../redux/actions/profileActions";
 import {changeLoadingStatus} from "../../redux/actions/loadingActions";
 import Spinner from "../spinner/spinner";
+import {compose} from "redux";
+import Profile from "./profileUser/profileUser";
 
 
 class ProfileContainer extends Component {
     componentDidMount() {
-        const {id, loadedProfileThunk} = this.props;
+        const {id, loadedProfileThunk, getUserStatus} = this.props;
         loadedProfileThunk(id)
+        getUserStatus(id)
     }
 
     render() {
-        const {loading, profile} = this.props;
+        const {loading, profile, status, updateStatus} = this.props;
+
         if (loading) {
             return <Spinner/>
         }
 
         return (
-            <Profile profile={profile}/>
+            <Profile profile={profile} status={status} updateStatus={updateStatus}/>
         )
     }
 }
 
-const Profile = ({profile: {fullName, photos, contacts}}) => {
-    const imgSmall = photos ? (photos.small ? photos.small : icon) : icon;
-
-    return (
-        <div className="profile">
-            <div className="profile__img-wrapper"><img className="profile__img" src={Bg} alt=""/></div>
-            <div className="profile__user">
-                <div className="profile__user-img"><img src={imgSmall} alt=""/></div>
-                <div className="profile__user-info">
-                    <div className="profile__user-name">{fullName}</div>
-                    <ul className="profile__user-list">
-                        {contacts.facebook ?
-                            <li className="profile__user-list-item">facebook: {contacts.facebook}</li> : null}
-                        {contacts.website ?
-                            <li className="profile__user-list-item">website: {contacts.website}</li> : null}
-                        {contacts.vk ? <li className="profile__user-list-item">vk: {contacts.vk}</li> : null}
-                        {contacts.twitter ?
-                            <li className="profile__user-list-item">twitter: {contacts.twitter}</li> : null}
-                        {contacts.instagram ?
-                            <li className="profile__user-list-item">instagram: {contacts.instagram}</li> : null}
-                        {contacts.youtube ?
-                            <li className="profile__user-list-item">youtube: {contacts.youtube}</li> : null}
-                        {contacts.github ?
-                            <li className="profile__user-list-item">github: {contacts.github}</li> : null}
-                        {contacts.mainLink ?
-                            <li className="profile__user-list-item">mainLink: {contacts.mainLink}</li> : null}
-                    </ul>
-                </div>
-            </div>
-            <MyPosts photos={photos.small ? photos : {small: icon}}/>
-        </div>
-    )
-}
 
 
-const mapStateToProps = ({profileReducer: {profile, posts, newPost}, loadingReducer: {loading}}) => ({
+
+
+const mapStateToProps = ({profileReducer: {profile, posts, newPost, status}, loadingReducer: {loading}}) => ({
     profile,
     posts,
     newPost,
     loading,
+    status
 })
 
 const actions = {
     loadedProfile,
     changeLoadingStatus,
     loadedProfileThunk,
+    getUserStatus,
+    updateStatus
 }
 
-export default connect(mapStateToProps, actions)(ProfileContainer);
+
+export default compose(
+    // withAuthRedirect,
+    connect(mapStateToProps, actions)
+)(ProfileContainer);

@@ -9,7 +9,7 @@ import './app.scss'
 import Dialogs from "../dialogs/dialogs";
 import ProfileContainer from "../profile/profile";
 import UsersContainer from "../users/users";
-import Auth from "../auth/auth";
+import Login from "../login/login";
 
 
 const App = () => {
@@ -24,7 +24,7 @@ const App = () => {
                     }/>
                     <Route path='/dialogs' component={Dialogs}/>
                     <Route path='/users' component={UsersContainer}/>
-                    <Route path='/auth' component={Auth}/>
+                    <Route path='/login' component={Login}/>
                 </Switch>
             </div>
         </div>

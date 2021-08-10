@@ -1,8 +1,6 @@
 
-const updateMessage = (body) => ({type: "UPDATE_MESSAGE", body});
-const postMessage = () => ({type: "POST_MESSAGE"});
+const postMessage = (data) => ({type: "POST_MESSAGE", data});
 
 export {
-    updateMessage,
     postMessage,
 }

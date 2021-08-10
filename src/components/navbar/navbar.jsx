@@ -6,13 +6,14 @@ import Friend2 from './friend2.png'
 import Friend3 from './friend3.png'
 import {NavLink} from "react-router-dom";
 import {connect} from "react-redux";
+import {compose} from "redux";
 
 const NavBar = ({id}) => {
     return (
         <div className="nav">
             <ul className="nav__list">
                 <li className="nav__list-item">
-                    <NavLink to={id ? `/profile/${id}` : '/auth'}
+                    <NavLink to={id ? `/profile/${id}` : '/login'}
                              activeClassName='nav__list-item_active'
                              className="nav__link"
                     >Profile</NavLink>
@@ -57,4 +58,6 @@ const mapStateToProps = ({authReducer: {id}}) => ({
     id
 })
 
-export default connect(mapStateToProps)(NavBar);
+export default compose(
+    connect(mapStateToProps)
+)(NavBar);
