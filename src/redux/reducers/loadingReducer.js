@@ -15,4 +15,10 @@ const loadingReducer = (state = initialState, action) => {
 }
 
 
+const changeLoadingStatus = (value) => ({type: "CHANGE_LOADING_STATUS", loading: value});
+
+export {
+    changeLoadingStatus,
+}
+
 export default loadingReducer;

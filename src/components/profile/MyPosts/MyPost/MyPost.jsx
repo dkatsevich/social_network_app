@@ -1,8 +1,6 @@
 import React from 'react';
 import './MyPost.scss'
 
-import Avatar from './../../myavatar.png'
-
 const MyPost = (props) => {
 
     const {name, photo} = props;

@@ -2,12 +2,11 @@ import React, {Component} from 'react';
 import MyPost from "./MyPost/MyPost";
 
 import './MyPosts.scss'
-import {addPost} from "../../../redux/actions/profileActions";
 import {connect} from "react-redux";
 import {Field, reduxForm} from "redux-form";
 import {maxLengthCreator, mustRequire} from "../../utils/validation";
 import {Input} from "../../formControls/formControls";
-import * as PropTypes from "prop-types";
+import {addPost} from "../../../redux/reducers/profileReducer";
 
 const maxLength100 = maxLengthCreator(100);
 
@@ -61,11 +60,6 @@ class MyPosts extends Component {
     }
 }
 
-MyPosts.propTypes = {
-    posts: PropTypes.any,
-    addPost: PropTypes.any,
-    photo: PropTypes.any
-}
 
 const mapStateToProps = ({profileReducer: {posts}}) => ({posts});
 const action = {

@@ -1,16 +1,14 @@
 import React from 'react';
-import friend from './../friend1.png';
 import me from './../myavatar.png';
 import './messages.scss';
 import {connect} from "react-redux";
 import AddMessageForm from "./messagesForm/messagesForm";
-import {postMessage} from "../../../redux/actions/messageActions";
-
+import {postMessage} from "../../../redux/reducers/messageReducer";
 
 const Messages = ({messages, postMessage}) => {
 
     const items = messages.map(message => {
-        const {id, body, address, img, name, who} = message;
+        const {id, body, address, name} = message;
 
         return (
             <div key={id} className={`message message-${address}`}>

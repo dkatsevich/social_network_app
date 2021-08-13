@@ -1,3 +1,6 @@
+import {ProfileAPI} from "../../services/serviceApi";
+import {changeLoadingStatus} from "./loadingReducer";
+
 const initialState = {
     posts: [
         {id: 1, body: 'Hey, why nobody love me 0?'},
@@ -45,5 +48,36 @@ const profileReducer = (state = initialState, action) => {
     }
 }
 
+
+const addPost = (data) => ({type: "ADD_POST", data});
+const loadedProfile = (profile) => ({type: "LOADED_PROFILE", profile});
+const setStatus = (status) => ({type: "SET_STATUS", status});
+
+const loadedProfileThunk = (id) => async (dispatch) => {
+    dispatch(changeLoadingStatus(true))
+    const res = await ProfileAPI.getProfile(id)
+    dispatch(loadedProfile(res.data))
+    dispatch(changeLoadingStatus(false))
+}
+
+const getUserStatus = (id) => async (dispatch) => {
+    const res = await ProfileAPI.getStatus(id)
+    dispatch(setStatus(res.data))
+}
+
+const updateStatus = (status) => async (dispatch) => {
+    const res = await ProfileAPI.updateStatus(status)
+    if (res.data.resultCode === 0) {
+        dispatch(setStatus(status));
+    }
+}
+
+export {
+    addPost,
+    loadedProfile,
+    loadedProfileThunk,
+    getUserStatus,
+    updateStatus
+}
 
 export default profileReducer;

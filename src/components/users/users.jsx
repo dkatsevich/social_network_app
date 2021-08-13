@@ -11,8 +11,8 @@ import {
     toggleDisable,
     toggleFollowConfirm,
     toggleFollowThunk
-} from "../../redux/actions/usersActions";
-import {changeLoadingStatus} from '../../redux/actions/loadingActions'
+} from "../../redux/reducers/usersReducer";
+import {changeLoadingStatus} from '../../redux/reducers/loadingReducer'
 import Spinner from "../spinner/spinner";
 import {
     getCurrentPage,

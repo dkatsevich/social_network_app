@@ -57,5 +57,10 @@ const messageReducer = (state = initialState, action) => {
     }
 }
 
+const postMessage = (data) => ({type: "POST_MESSAGE", data});
+
+export {
+    postMessage,
+}
 
 export default messageReducer;

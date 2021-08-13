@@ -11,8 +11,8 @@ import ProfileContainer from "../profile/profile";
 import UsersContainer from "../users/users";
 import Login from "../login/login";
 import {connect} from "react-redux";
-import {processInitialize} from "../../redux/actions/appActions";
 import Spinner from "../spinner/spinner";
+import {processInitialize} from "../../redux/reducers/appReducer";
 
 
 class App extends React.Component {

@@ -1,13 +1,13 @@
 import React, {Component} from 'react';
 import './profile.scss'
 import {connect} from "react-redux";
-import {getUserStatus, loadedProfile, loadedProfileThunk, updateStatus} from "../../redux/actions/profileActions";
-import {changeLoadingStatus} from "../../redux/actions/loadingActions";
 import Spinner from "../spinner/spinner";
 import {compose} from "redux";
 import Profile from "./profileUser/profileUser";
-import {Redirect, withRouter} from "react-router-dom";
+import {Redirect} from "react-router-dom";
 import withAuthRedirect from "../hoc/withAuthRedirect";
+import {getUserStatus, loadedProfile, loadedProfileThunk, updateStatus} from "../../redux/reducers/profileReducer";
+import {changeLoadingStatus} from "../../redux/reducers/loadingReducer";
 
 
 class ProfileContainer extends Component {
@@ -45,7 +45,6 @@ class ProfileContainer extends Component {
     }
 }
 
-
 const mapStateToProps = ({profileReducer: {profile, posts, newPost, status}, authReducer: {id}, loadingReducer: {loading}}) => ({
     profile,
     posts,
@@ -66,6 +65,5 @@ const actions = {
 
 export default compose(
     withAuthRedirect,
-    withRouter,
     connect(mapStateToProps, actions)
 )(ProfileContainer);

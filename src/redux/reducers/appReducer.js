@@ -1,3 +1,5 @@
+import {authMeThunk} from "./authReducer";
+
 const initialState = {
     initialized: false,
 };
@@ -15,5 +17,19 @@ const appReducer = (state = initialState, action) => {
     }
 }
 
+
+const initializedSuccess = () => ({type: "INITIALIZED_SUCCESS"});
+
+const processInitialize = () => (dispatch) => {
+    const authPromise = dispatch(authMeThunk())
+
+    Promise.all([authPromise]).then(() => {
+        dispatch(initializedSuccess())
+    })
+}
+
+export {
+    processInitialize
+}
 
 export default appReducer;

@@ -2,11 +2,11 @@ import React from "react";
 import {Field, reduxForm} from "redux-form";
 import {connect} from "react-redux";
 import {compose} from "redux";
-import {loginMeThunk} from "../../redux/actions/authActions";
 import {maxLengthCreator, mustRequire} from "../utils/validation";
 import {Input} from "../formControls/formControls";
 import './login.scss'
 import {Redirect, withRouter} from "react-router-dom";
+import {loginMeThunk} from "../../redux/reducers/authReducer";
 
 const Login = ({loginMeThunk, isAuth}) => {
     const onSubmit = (formData) => {

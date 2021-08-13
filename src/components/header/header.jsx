@@ -4,8 +4,8 @@ import './header.scss'
 import Logo from './logo.png'
 import LogoDescr from './logo-descr.svg'
 import {connect} from "react-redux";
-import {authMeThunk, logOutMeThunk} from "../../redux/actions/authActions";
 import {NavLink} from "react-router-dom";
+import {authMeThunk, logOutMeThunk} from "../../redux/reducers/authReducer";
 
 
 class Header extends Component {

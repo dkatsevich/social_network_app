@@ -5,7 +5,6 @@ import Bg from "../content.jpg";
 import MyPosts from "../MyPosts/MyPosts";
 
 const Profile = ({status, updateStatus, profile: {fullName, photos, contacts}}) => {
-    console.log('profile');
     const imgSmall = photos ? (photos.small ? photos.small : icon) : icon;
     const contactsList = contacts ? Object.entries(contacts).map((item, i) => {
         if (item[1]) {
