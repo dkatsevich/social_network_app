@@ -4,27 +4,34 @@ import './header.scss'
 import Logo from './logo.png'
 import LogoDescr from './logo-descr.svg'
 import {connect} from "react-redux";
-import {authMeThunk, putUserData} from "../../redux/actions/authActions";
+import {authMeThunk, logOutMeThunk} from "../../redux/actions/authActions";
+import {NavLink} from "react-router-dom";
 
 
 class Header extends Component {
-    componentDidMount() {
-        this.props.authMeThunk()
-    }
+
 
     render() {
-        const {isAuth, login} = this.props;
+        const {isAuth, login, logOutMeThunk, id} = this.props;
 
         return (
             <header className="header">
                 <div className="header__logo">
-                    <a href="#">
+                    <NavLink to='/'>
                         <img src={Logo} alt=""/>
-                    </a>
+                    </NavLink>
                 </div>
                 <img className="header__descr" src={LogoDescr} alt=""/>
                 <div className="header__auth">
-                    {isAuth ? login : <a href="#" className="login">Please login</a>}
+                    {isAuth ?
+                        (
+                            <div className='header__logged'>
+                                <NavLink to={`/profile/${id}`}>{login}</NavLink>
+                                <button onClick={logOutMeThunk}>Log out</button>
+                            </div>
+                        )
+                        :
+                        <NavLink to='/login' className="header__unlogged">Please login</NavLink>}
                 </div>
             </header>
         )
@@ -33,12 +40,13 @@ class Header extends Component {
 
 const mapDispatchToProps = ({authReducer: {isAuth, login, id}}) => ({
     isAuth,
-    login
+    login,
+    id,
 })
 
 const actions = {
-    putUserData,
     authMeThunk,
+    logOutMeThunk,
 }
 
 export default connect(mapDispatchToProps, actions)(Header);

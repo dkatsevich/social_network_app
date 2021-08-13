@@ -1,25 +1,39 @@
 import React, {Component} from 'react';
 import './profile.scss'
-import Bg from './content.jpg'
-import icon from './../users/user/icon.jpg'
-import MyPosts from "./MyPosts/MyPosts";
 import {connect} from "react-redux";
 import {getUserStatus, loadedProfile, loadedProfileThunk, updateStatus} from "../../redux/actions/profileActions";
 import {changeLoadingStatus} from "../../redux/actions/loadingActions";
 import Spinner from "../spinner/spinner";
 import {compose} from "redux";
 import Profile from "./profileUser/profileUser";
+import {Redirect, withRouter} from "react-router-dom";
+import withAuthRedirect from "../hoc/withAuthRedirect";
 
 
 class ProfileContainer extends Component {
+    state = {
+        redirect: false
+    }
+
     componentDidMount() {
-        const {id, loadedProfileThunk, getUserStatus} = this.props;
-        loadedProfileThunk(id)
-        getUserStatus(id)
+        let {userId, loadedProfileThunk, getUserStatus, loggedId} = this.props;
+        if (!userId) {
+            userId = loggedId;
+            if (!userId) {
+                this.setState({
+                    redirect: true
+                })
+            }
+        }
+        loadedProfileThunk(userId)
+        getUserStatus(userId)
     }
 
     render() {
         const {loading, profile, status, updateStatus} = this.props;
+        const {redirect} = this.state;
+
+        if (redirect) return <Redirect to='/login'/>
 
         if (loading) {
             return <Spinner/>
@@ -32,15 +46,13 @@ class ProfileContainer extends Component {
 }
 
 
-
-
-
-const mapStateToProps = ({profileReducer: {profile, posts, newPost, status}, loadingReducer: {loading}}) => ({
+const mapStateToProps = ({profileReducer: {profile, posts, newPost, status}, authReducer: {id}, loadingReducer: {loading}}) => ({
     profile,
     posts,
     newPost,
     loading,
-    status
+    status,
+    loggedId: id,
 })
 
 const actions = {
@@ -53,6 +65,7 @@ const actions = {
 
 
 export default compose(
-    // withAuthRedirect,
+    withAuthRedirect,
+    withRouter,
     connect(mapStateToProps, actions)
 )(ProfileContainer);

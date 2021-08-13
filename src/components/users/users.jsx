@@ -1,4 +1,4 @@
-import React, {Component} from "react";
+import React, {Component, useState} from "react";
 import {connect} from "react-redux";
 
 import './users.scss'
@@ -14,6 +14,16 @@ import {
 } from "../../redux/actions/usersActions";
 import {changeLoadingStatus} from '../../redux/actions/loadingActions'
 import Spinner from "../spinner/spinner";
+import {
+    getCurrentPage,
+    getDisabledUsers,
+    getId,
+    getIsFetching,
+    getLoading,
+    getPageSize,
+    getTotalCount,
+    getUsers
+} from "../../redux/selectors/userSelectors";
 
 class UsersContainer extends Component {
 
@@ -26,7 +36,7 @@ class UsersContainer extends Component {
         const {toggleFollowConfirm, myId, toggleDisable, isFetching, disabledUsers, toggleFollowThunk} = this.props;
         return arr.map(user => {
             const {id, ...userInfo} = user;
-            const me = id === myId ? true : false;
+            const me = id === myId;
             return (
                 <User key={id}
                       id={id}
@@ -42,28 +52,6 @@ class UsersContainer extends Component {
         })
     }
 
-    renderPagination = () => {
-        const {pageSize, totalCount, currentPage} = this.props;
-        let pageCount = Math.floor(totalCount / pageSize);
-        const arr = []
-
-        for (let i = 1; i < pageCount; i++) {
-            if (i > 13) {
-                break;
-            }
-            arr.push(i)
-        }
-
-        return arr.map((item, i) => {
-
-            return (
-                <button key={i} className={`users__pag-btn ${item === currentPage ? 'active' : ''}`}
-                        onClick={() => this.paginationRequest(item)}>{item}</button>
-            )
-        })
-
-    }
-
     paginationRequest = (pageNumber) => {
         const {setCurrentPage, currentPage, pageSize, getUsersThunk} = this.props;
 
@@ -74,27 +62,66 @@ class UsersContainer extends Component {
     }
 
     render() {
-        console.log('render')
-        const {users, currentPage, loading} = this.props;
+        const {users, currentPage, loading, pageSize, totalCount} = this.props;
         const userItems = this.renderUsers(users);
 
         return (
             <Users users={userItems}
-                   currentPage={currentPage}
-                   pagination={this.renderPagination()}
                    paginationRequest={this.paginationRequest}
                    loading={loading}
+                   pageSize={pageSize}
+                   totalCount={totalCount}
+                   currentPage={currentPage}
             />
         )
     }
 }
 
-const Users = ({users, loading, pagination}) => {
+const Paginator = ({pageSize, totalCount, currentPage, paginationRequest, portionCount = 10}) => {
+    const pageCount = Math.floor(totalCount / pageSize);
+    const startingAction = () => {
+        const arr = [];
+        for (let i = 1; i < pageCount; i++) {
+            arr.push(i)
+        }
+        return arr
+    }
+
+    const [portionNumber, setPortionNumber] = useState(5);
+    let LeftBorder = (portionNumber - 1) * portionCount + 1;
+    let RightBorder = portionNumber * portionCount;
+
+    console.log(portionNumber);
+    return (
+        <div>
+            {portionNumber > 1 &&
+                <button className='users__btn-prev' onClick={() => setPortionNumber(portionNumber - 1)}>Prev</button>}
+            {
+                startingAction()
+                    .filter(item => item >= LeftBorder && item <= RightBorder)
+                    .map(item => {
+                        const activeClass = item === currentPage ? 'active' : '';
+                        return <button
+                            key={item}
+                            className={`users__pag-btn ${activeClass}`}
+                            onClick={() => paginationRequest(item)}
+                        >{item}</button>
+                    })
+            }
+            {(portionNumber + 1) < (pageCount / 10) &&
+                <button className='users__btn-next' onClick={() => setPortionNumber(portionNumber + 1)}>Next</button>}
+        </div>
+    )
+}
+
+
+const Users = ({users, loading, pageSize, totalCount, currentPage, paginationRequest}) => {
     return (
         <div className="users">
             <div className="users__title">Users</div>
             <div className="users__pagination">
-                {pagination}
+                <Paginator pageSize={pageSize} totalCount={totalCount} currentPage={currentPage}
+                           paginationRequest={paginationRequest}/>
             </div>
             <div className="users__items">
                 {loading ? <Spinner/> : users}
@@ -103,21 +130,18 @@ const Users = ({users, loading, pagination}) => {
     )
 }
 
-const mapStateToProps = ({
-                             usersReducer: {users, pageSize, totalCount, currentPage, isFetching, disabledUsers},
-                             loadingReducer: {loading},
-                             authReducer: {id}
-                         }
-) => ({
-    users,
-    isFetching,
-    pageSize,
-    totalCount,
-    currentPage,
-    loading,
-    disabledUsers,
-    myId: id
-})
+const mapStateToProps = (state) => {
+    return {
+        users: getUsers(state),
+        isFetching: getIsFetching(state),
+        pageSize: getPageSize(state),
+        totalCount: getTotalCount(state),
+        currentPage: getCurrentPage(state),
+        loading: getLoading(state),
+        disabledUsers: getDisabledUsers(state),
+        myId: getId(state)
+    }
+}
 
 const actions = {
     setUsers,

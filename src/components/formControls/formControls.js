@@ -1,34 +1,19 @@
 import React from "react";
+import './formControls.scss'
 
-const FormField = (props) => {
-    const hasError = props.touched && props.error;
-    console.log(props.touched);
+const withFormValidate = (Tag) => (props) => {
+    const {input, meta: {touched, error}, ...restProps} = props;
+    const hasError = touched && error;
     return (
-        <div>
-            {props.children}
-            {hasError ? <span>{props.error}</span> : null}
+        <div className={hasError ? '_validate_error' : ""}>
+            <Tag {...input} {...restProps}/>
+            {hasError ? <span className='_error'>{error}</span> : null}
         </div>
     )
 }
 
-const Input = (props) => {
-    const {input, meta, ...restProps} = props;
-    return (
-        <FormField {...meta}>
-            <input {...input} {...restProps}/>
-        </FormField>
-    )
-}
-
-const Textarea = (props) => {
-    const {input, meta, ...restProps} = props;
-    return (
-        <FormField {...meta}>
-            <textarea {...input} {...restProps}/>
-        </FormField>
-    )
-}
-
+const Input = withFormValidate('input');
+const Textarea = withFormValidate('textarea');
 
 export {
     Input,

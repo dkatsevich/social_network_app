@@ -2,7 +2,6 @@ import React from "react";
 import icon from './icon.jpg'
 import './user.scss'
 import {NavLink} from "react-router-dom";
-import UserAPI from "../../../services/serviceApi";
 
 const User = ({id, toggleFollowThunk, disabledUsers, userInfo: {name, status, photos, followed}, me}) => {
     const imgSmall = photos ? (photos.small ? photos.small : icon) : icon;

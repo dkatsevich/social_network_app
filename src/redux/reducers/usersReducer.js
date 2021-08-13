@@ -49,6 +49,16 @@ const usersReducer = (state = initialState, action) => {
                     return user;
                 })
             }
+        case "LIKE_USER":
+            return {
+                ...state,
+                users: state.users.map((user,i) => {
+                    if (i === action.id) {
+                        return {...user, liked: !user.followed}
+                    }
+                    return user;
+                })
+            }
         default:
             return state;
     }

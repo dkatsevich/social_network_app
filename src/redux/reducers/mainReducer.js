@@ -6,9 +6,11 @@ import profileReducer from "./profileReducer";
 import usersReducer from "./usersReducer";
 import loadingReducer from "./loadingReducer";
 import authReducer from "./authReducer";
+import appReducer from "./appReducer";
 
 
 const reducer = combineReducers({
+    appReducer,
     messageReducer,
     profileReducer,
     usersReducer,

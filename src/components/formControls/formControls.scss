@@ -1,0 +1,11 @@
+._validate_error {
+  position: relative;
+  input,
+  textarea {
+    border: 1px solid red;
+  }
+  span {
+    font-size: 16px;
+    font-weight: 500;
+  }
+}

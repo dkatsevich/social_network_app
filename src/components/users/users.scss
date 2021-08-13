@@ -20,11 +20,35 @@
     background: #318CBF;
     padding: 5px;
     margin-right: 4px;
+
     &.active {
       color: #000000;
       transition: all .3s ease;
       background: #fff;
       border: 1px solid #318CBF;
     }
+  }
+
+  &__btn-prev,
+  &__btn-next {
+    font-size: 15px;
+    font-weight: 700;
+    color: #fff;
+    background: #075395;
+    padding: 5px;
+    transition: all .3s ease;
+    border: 1px solid transparent;
+    &:hover {
+      background: #ffffff;
+      color: #075395;
+      border: 1px solid #075395;
+    }
+  }
+  &__btn-prev {
+    margin-right: 4px;
+  }
+
+  &__btn-next {
+    margin-left: 4px;
   }
 }

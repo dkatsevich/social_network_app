@@ -11,7 +11,6 @@ const messageReducer = (state = initialState, action) => {
             return {
                 ...state,
                 ...action.data,
-                isAuth: true,
             }
 
         default:

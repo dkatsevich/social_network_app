@@ -8,18 +8,19 @@ import {NavLink} from "react-router-dom";
 import {connect} from "react-redux";
 import {compose} from "redux";
 
-const NavBar = ({id}) => {
+const NavBar = () => {
     return (
         <div className="nav">
             <ul className="nav__list">
                 <li className="nav__list-item">
-                    <NavLink to={id ? `/profile/${id}` : '/login'}
+                    <NavLink to={`/profile/`}
                              activeClassName='nav__list-item_active'
                              className="nav__link"
                     >Profile</NavLink>
                 </li>
                 <li className="nav__list-item">
-                    <NavLink to="/dialogs" activeClassName='nav__list-item_active' className="nav__link">Messages</NavLink>
+                    <NavLink to="/dialogs" activeClassName='nav__list-item_active'
+                             className="nav__link">Messages</NavLink>
                 </li>
                 <li className="nav__list-item">
                     <NavLink to="/" className="nav__link">News</NavLink>
@@ -54,8 +55,9 @@ const NavBar = ({id}) => {
         </div>
     )
 }
-const mapStateToProps = ({authReducer: {id}}) => ({
-    id
+const mapStateToProps = ({authReducer: {id, isAuth}}) => ({
+    id,
+    isAuth
 })
 
 export default compose(

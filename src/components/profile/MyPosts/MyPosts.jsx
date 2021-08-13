@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Component} from 'react';
 import MyPost from "./MyPost/MyPost";
 
 import './MyPosts.scss'
@@ -6,9 +6,10 @@ import {addPost} from "../../../redux/actions/profileActions";
 import {connect} from "react-redux";
 import {Field, reduxForm} from "redux-form";
 import {maxLengthCreator, mustRequire} from "../../utils/validation";
-import {Input, Textarea} from "../../formControls/formControls";
+import {Input} from "../../formControls/formControls";
+import * as PropTypes from "prop-types";
 
-const maxLength10 = maxLengthCreator(10);
+const maxLength100 = maxLengthCreator(100);
 
 let AddPostForm = (props) => {
     return (
@@ -18,7 +19,7 @@ let AddPostForm = (props) => {
                    placeholder="Your news..."
                    className="posts__input"
                    component={Input}
-                   validate={[mustRequire, maxLength10]}
+                   validate={[mustRequire, maxLength100]}
             />
             <button className="posts__btn">Send</button>
         </form>
@@ -27,28 +28,43 @@ let AddPostForm = (props) => {
 
 AddPostForm = reduxForm({form: 'postForm'})(AddPostForm);
 
-const MyPosts = ({posts, addPost, photos}) => {
-
-    const addMessage = (formData) => {
-        console.log(formData.newPost);
-        addPost(formData.newPost)
+class MyPosts extends Component {
+    componentDidMount() {
+        this.setState({
+            a: 10,
+        })
     }
 
-    const postItems = posts.map(post => {
-        return (
-            <MyPost key={post.id} name={post.body} photo={photos.small}/>
-        )
-    })
+    render() {
 
-    return (
-        <div className="posts">
-            <div className="posts__title">My posts</div>
-            <AddPostForm onSubmit={addMessage}/>
-            <div className="posts__items">
-                {postItems}
+        let {posts, addPost, photo} = this.props;
+        const addMessage = (formData) => {
+            console.log(formData.newPost);
+            addPost(formData.newPost)
+        }
+
+        const postItems = posts.map(post => {
+            return (
+                <MyPost key={post.id} name={post.body} photo={photo}/>
+            )
+        })
+
+        return (
+            <div className="posts">
+                <div className="posts__title">My posts</div>
+                <AddPostForm onSubmit={addMessage}/>
+                <div className="posts__items">
+                    {postItems}
+                </div>
             </div>
-        </div>
-    )
+        )
+    }
+}
+
+MyPosts.propTypes = {
+    posts: PropTypes.any,
+    addPost: PropTypes.any,
+    photo: PropTypes.any
 }
 
 const mapStateToProps = ({profileReducer: {posts}}) => ({posts});

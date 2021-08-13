@@ -38,8 +38,11 @@ const AuthAPI = {
     authMe() {
         return instance.get(`/auth/me`)
     },
-    login(data) {
+    logIn(data) {
         return instance.post('/auth/login', {...data})
+    },
+    logOut() {
+        return instance.delete('/auth/login')
     }
 }
 

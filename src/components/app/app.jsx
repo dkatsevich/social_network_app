@@ -10,25 +10,46 @@ import Dialogs from "../dialogs/dialogs";
 import ProfileContainer from "../profile/profile";
 import UsersContainer from "../users/users";
 import Login from "../login/login";
+import {connect} from "react-redux";
+import {processInitialize} from "../../redux/actions/appActions";
+import Spinner from "../spinner/spinner";
 
 
-const App = () => {
-    return (
-        <div className="wrapper">
-            <Header/>
-            <NavBar/>
-            <div className="content">
-                <Switch>
-                    <Route path='/profile/:id?' render={
-                        ({match}) => <ProfileContainer id={match.params.id}/>
-                    }/>
-                    <Route path='/dialogs' component={Dialogs}/>
-                    <Route path='/users' component={UsersContainer}/>
-                    <Route path='/login' component={Login}/>
-                </Switch>
+class App extends React.Component {
+    componentDidMount() {
+        this.props.processInitialize()
+    }
+
+    render() {
+        const {initialized} = this.props;
+
+        if (!initialized) return <Spinner/>
+
+        return (
+            <div className="wrapper">
+                <Header/>
+                <NavBar/>
+                <div className="content">
+                    <Switch>
+                        <Route path='/profile/:userId?' render={
+                            ({match}) => <ProfileContainer userId={match.params.userId}/>
+                        }/>
+                        <Route path='/dialogs' component={Dialogs}/>
+                        <Route path='/users' component={UsersContainer}/>
+                        <Route path='/login' component={Login}/>
+                    </Switch>
+                </div>
             </div>
-        </div>
-    )
+        )
+    }
 }
 
-export default App;
+const mapStateToProps = ({appReducer: {initialized}}) => ({
+    initialized
+})
+
+const actions = {
+    processInitialize
+}
+
+export default connect(mapStateToProps, actions)(App);

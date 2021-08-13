@@ -25,5 +25,5 @@ const Dialogs = () => {
 }
 
 export default compose(
-    // withAuthRedirect
+    withAuthRedirect
 )(Dialogs);
