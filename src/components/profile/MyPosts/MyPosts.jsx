@@ -28,17 +28,10 @@ let AddPostForm = (props) => {
 AddPostForm = reduxForm({form: 'postForm'})(AddPostForm);
 
 class MyPosts extends Component {
-    componentDidMount() {
-        this.setState({
-            a: 10,
-        })
-    }
-
     render() {
 
         let {posts, addPost, photo} = this.props;
         const addMessage = (formData) => {
-            console.log(formData.newPost);
             addPost(formData.newPost)
         }
 
