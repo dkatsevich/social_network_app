@@ -1,22 +1,22 @@
 import React from 'react';
-import {Route, Switch} from "react-router-dom";
+import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
 
 import Header from '../header/header';
 import NavBar from '../navbar/navbar';
 
 import './app.scss'
 
-import {connect} from "react-redux";
+import {connect, Provider} from "react-redux";
 import Spinner from "../spinner/spinner";
 import {processInitialize} from "../../redux/reducers/appReducer";
+import store from "../../redux/store";
+import {compose} from "redux";
+import ErrorBoundary from "../errorBoundary/errorBoundary";
 
 const Dialogs = React.lazy(() => import("../dialogs/dialogs"));
 const ProfileContainer = React.lazy(() => import("../profile/profile"));
 const UsersContainer = React.lazy(() => import("../users/users"));
 const Login = React.lazy(() => import("../login/login"));
-
-
-
 
 class App extends React.Component {
     componentDidMount() {
@@ -57,4 +57,22 @@ const actions = {
     processInitialize
 }
 
-export default connect(mapStateToProps, actions)(App);
+const AppContainer = connect(mapStateToProps, actions)(App);
+
+
+const SuperApp = () => {
+    return (
+        <Provider store={store}>
+            <ErrorBoundary>
+                <Router>
+                    <AppContainer/>
+                </Router>
+            </ErrorBoundary>
+        </Provider>
+    )
+}
+
+
+
+
+export default SuperApp;
