@@ -31,6 +31,18 @@ const ProfileAPI = {
     },
     updateStatus(status) {
         return instance.put(`/profile/status`, {status})
+    },
+    updatePhotos(photo) {
+        const formData = new FormData();
+        formData.append('image', photo)
+        return instance.put(`/profile/photo`, formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        })
+    },
+    postContacts(data) {
+        return instance.put(`/profile`, data)
     }
 }
 
@@ -46,9 +58,16 @@ const AuthAPI = {
     }
 }
 
+const SecurityAPI = {
+    getCaptchaUrl() {
+        return instance.get(`/security/get-captcha-url`)
+    }
+}
+
 
 export default UserAPI;
 export {
     AuthAPI,
-    ProfileAPI
+    ProfileAPI,
+    SecurityAPI
 }

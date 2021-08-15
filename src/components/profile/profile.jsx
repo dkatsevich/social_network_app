@@ -4,9 +4,15 @@ import {connect} from "react-redux";
 import Spinner from "../spinner/spinner";
 import {compose} from "redux";
 import Profile from "./profileUser/profileUser";
-import {Redirect} from "react-router-dom";
+import {Redirect, withRouter} from "react-router-dom";
 import withAuthRedirect from "../hoc/withAuthRedirect";
-import {getUserStatus, loadedProfile, loadedProfileThunk, updateStatus} from "../../redux/reducers/profileReducer";
+import {
+    getUserStatus,
+    loadedProfile,
+    loadedProfileThunk, postContacts,
+    updatePhotos,
+    updateStatus
+} from "../../redux/reducers/profileReducer";
 import {changeLoadingStatus} from "../../redux/reducers/loadingReducer";
 
 
@@ -14,8 +20,7 @@ class ProfileContainer extends Component {
     state = {
         redirect: false
     }
-
-    componentDidMount() {
+    refreshProfile = () => {
         let {userId, loadedProfileThunk, getUserStatus, loggedId} = this.props;
         if (!userId) {
             userId = loggedId;
@@ -28,9 +33,17 @@ class ProfileContainer extends Component {
         loadedProfileThunk(userId)
         getUserStatus(userId)
     }
+    componentDidMount() {
+        this.refreshProfile();
+    }
+    componentDidUpdate(prevProps) {
+        if (prevProps.userId !== this.props.userId) {
+            this.refreshProfile();
+        }
+    }
 
     render() {
-        const {loading, profile, status, updateStatus} = this.props;
+        const {loading, profile, status, updateStatus, updatePhotos, photoError, postContacts, contactsError} = this.props;
         const {redirect} = this.state;
 
         if (redirect) return <Redirect to='/login'/>
@@ -40,17 +53,28 @@ class ProfileContainer extends Component {
         }
 
         return (
-            <Profile profile={profile} status={status} updateStatus={updateStatus}/>
+            <Profile
+                profile={profile}
+                status={status}
+                updateStatus={updateStatus}
+                isOwner={!this.props.match.params.userId}
+                updatePhotos={updatePhotos}
+                photoError={photoError}
+                postContacts={postContacts}
+                contactsError={contactsError}
+            />
         )
     }
 }
 
-const mapStateToProps = ({profileReducer: {profile, posts, newPost, status}, authReducer: {id}, loadingReducer: {loading}}) => ({
+const mapStateToProps = ({profileReducer: {profile, posts, newPost, status, photoError, contactsError}, authReducer: {id}, loadingReducer: {loading}}) => ({
     profile,
     posts,
     newPost,
     loading,
     status,
+    photoError,
+    contactsError,
     loggedId: id,
 })
 
@@ -59,11 +83,14 @@ const actions = {
     changeLoadingStatus,
     loadedProfileThunk,
     getUserStatus,
-    updateStatus
+    updateStatus,
+    updatePhotos,
+    postContacts
 }
 
 
 export default compose(
     withAuthRedirect,
+    withRouter,
     connect(mapStateToProps, actions)
 )(ProfileContainer);

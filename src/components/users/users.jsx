@@ -91,7 +91,6 @@ const Paginator = ({pageSize, totalCount, currentPage, paginationRequest, portio
     let LeftBorder = (portionNumber - 1) * portionCount + 1;
     let RightBorder = portionNumber * portionCount;
 
-    console.log(portionNumber);
     return (
         <div>
             {portionNumber > 1 &&
